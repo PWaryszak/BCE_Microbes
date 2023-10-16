@@ -1,17 +1,12 @@
 #RAW DATA Cleaning:=======
 #Load Libraries and Notes:
-library(tidyverse)
-library(readxl)
-library(lubridate)
-library(scales)
-library(RColorBrewer)
-library(lme4)
-library(vegan)
-library(readxl)
-library(tidyverse)
 
-#Pawel continues to clean taxa names in "Taxa_DATA_ALL_EXTRACTED.xlsx" file:
-#Link3GDRIVE: https://docs.google.com/spreadsheets/d/1yICgLcTXEYdZul7Hto4U4CA0xgr34vNO/edit?usp=drive_link&ouid=100881671914675049849&rtpof=true&sd=true
+if (!require(stringr))install.packages('stringr')
+library(stringr)
+if (!require(tidyverse))install.packages('tidyverse')
+library(tidyverse)
+if (!require(readxl))install.packages('readxl')
+library(readxl)
 
 #BCL  data:============
 df_bcl <- read_excel("DataAnalysis_BlueBugs2022_MASTERFILE.xlsx", sheet = "clean_data") %>%
@@ -74,7 +69,10 @@ df_bertram3_ByArea
 
 #MERGE BCL + GLOBAL DATA for plotting and gap analysis:
 gap <- rbind(df_bcl3_ByCountry, df_bertram3_ByCountry)
+gap$Ecosystem <- str_to_title(gap$Ecosystem) #capitalising first letter on Ecosystme names
+gap$Ecosystem <- factor(gap$Ecosystem, levels = c("Mangrove","Seagrass","Saltmarsh"))
 gap
+write.csv(gap, file = "GapAnalysisNumbers.csv", row.names = F)
 
 
 #PLOT1 (BCE by country number)=========
@@ -83,7 +81,7 @@ PD<-position_dodge(0.9)
 ggplot(gap, aes(x=Presence, y= n_countries, fill= Ecosystem , width=.75)) +
     geom_bar(position=PD, stat="identity",colour="black")+
     facet_grid(.~Ecosystem) +
-    scale_fill_manual(values=c("mangrove" = "#238443", "seagrass" = "yellow", saltmarsh = "#dd3497")) +
+    scale_fill_manual(values=c("Mangrove" = "#238443", "Seagrass" = "yellow", "Saltmarsh" = "#dd3497")) +
   labs(x = "Presence",y="Number of countries")+
   guides(fill = FALSE, size = FALSE)+
   #coord_equal() +
@@ -101,8 +99,6 @@ ggplot(gap, aes(x=Presence, y= n_countries, fill= Ecosystem , width=.75)) +
     plot.background = element_blank())  
 
 #ggsave(bg = "white",width = 12, height = 7, file = "GAP_ANALYSIS_PLOT.png")
-
-
 
 
 #PLOT2 (2y-axis , publication+area by ecosystem)========

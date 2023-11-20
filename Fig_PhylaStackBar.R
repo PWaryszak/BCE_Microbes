@@ -90,7 +90,7 @@ names(taxa3_ecosystem)#"StudyID_Cov" "BlueBug"     "SeekPhyla"   "Phyla_Hits"  "
 t<- taxa3_ecosystem %>%
   group_by(Group_Hits, Phyla_Hits, Ecosystem ) %>%
   summarise(Abundance = n(),
-            Frequency = round(Abundance/ Total_Papers * 100,1)) #Compute % Occurance of Phyla
+            Frequency = round(Abundance/ Total_Papers * 100,1)) #Compute % occurrence of Phyla
 
 View(t)
 write.csv(t, "Phyla_StackBarNumber.csv", row.names = F)
@@ -137,13 +137,13 @@ a <- taxa3_ecosystem[taxa3_ecosystem$Group_Hits == "Archaea", ]
 
 a_plot <- ggplot(data = a, aes(x = Ecosystem2, fill = Phyla_Hits)) + 
   geom_bar(col = "black") +
-    scale_y_continuous(limits = c(0,60))+
+    scale_y_continuous(limits = c(0,80))+
   scale_fill_manual(values = c(
     '#f7fcfd','#e5f5f9','#ccece6','#99d8c9','#66c2a4','#41ae76','#238b45','#006d2c','#00441b',
     '#756bb1','#9966FF','#bcbddc')) +
   theme_bw() +
   ggtitle("Archaea") +
-  labs(fill = "Phyla:", x = "", y = "Number of occurances") +
+  labs(fill = "Phyla:", x = "", y = "Number of occurrences") +
   theme(
     axis.text.x = element_text(size = 26, colour = "black"),
     axis.text.y = element_text(size = 16, colour = "black"),
@@ -179,7 +179,7 @@ b_plot <- ggplot( data = b ,aes(x = Ecosystem2, fill = Phyla_Hits)) +
     axis.text.y = element_text(size = 16, colour = "black"),
     axis.title.x = element_text(size = 26),
     axis.title.y = element_text(size = 26),
-    legend.position = c(0.98, 0.98),  # Position the legend at (0.6, 0.9)
+    legend.position = c(0.99, 0.98),  # Position the legend at (0.6, 0.9)
     legend.justification = c(1, 1),  # Align the legend to the top-right
     #legend.direction='horizontal',
     legend.text = element_text(size = 6),
@@ -199,7 +199,7 @@ f_plot <- ggplot( data = f ,aes(x = Ecosystem2, fill = Phyla_Hits)) +
   geom_bar(col="black") +
   scale_fill_manual(values = c('#f7fbff','#deebf7','#c6dbef','#9ecae1','#6baed6','#4292c6','#2171b5','#08519c','#08306b','#f1eef6','#bdc9e1','#74a9cf','#2b8cbe','#045a8d'))+
   theme_bw() +
-  scale_y_continuous(limits = c(0,60))+
+  scale_y_continuous(limits = c(0,80))+
   ggtitle("Fungi")+
   labs(fill ="Phyla: ", x="", y="")+
   theme(
@@ -224,7 +224,7 @@ f_plot
 #3 Columns
 p_plots_horizon  <- ggarrange(a_plot, b_plot, f_plot, ncol=3)
 p_plots_horizon
-ggsave(p_plots_horizon, filename = "FIG_PhylaStackBar_ncol3.jpg", width = 60, height = 18, units = "cm", dpi = 600)
+ggsave(p_plots_horizon, filename = "FIG_PhylaStackBar_ncol3_V5.jpg", width = 60, height = 18, units = "cm", dpi = 600)
 
 #1 Column:
 p_plots_horizon  <- ggarrange(a_plot, b_plot, f_plot, ncol=1)
